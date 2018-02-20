@@ -10,13 +10,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.widget.Toast;
 
 import com.example.khang.betapkechuyen.R;
+import com.example.khang.betapkechuyen.fragment.GauBongFragment;
 import com.example.khang.betapkechuyen.fragment.TruyenCuaBeFragment;
 
 public class MainActivity extends AppCompatActivity {
     DrawerLayout mDrawerLayout;
     Toolbar toolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,19 +27,23 @@ public class MainActivity extends AppCompatActivity {
 
         initToolbar();
         initDrawer();
+        loadFragment(new TruyenCuaBeFragment());
+    }
 
-        Fragment fragment = new TruyenCuaBeFragment();
+    private void loadFragment(Fragment fragment) {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.setCustomAnimations(android.R.anim.fade_in,
                 android.R.anim.fade_out);
         fragmentTransaction.replace(R.id.frame, fragment, "Khang");
         fragmentTransaction.commitAllowingStateLoss();
     }
+
     private void initToolbar() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         setTitle("Truyện của bé");
     }
+
     private void initDrawer() {
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
 
@@ -45,9 +52,21 @@ public class MainActivity extends AppCompatActivity {
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
+                switch (menuItem.getItemId()) {
+                    case R.id.truyen_cua_be:;
+                        loadFragment(new TruyenCuaBeFragment());
+                        break;
+                    default:
+                        loadFragment(new GauBongFragment());
+                }
 
-                if (menuItem.isChecked()) menuItem.setChecked(false);
-                else menuItem.setChecked(true);
+                if (menuItem.isChecked()) {
+                    menuItem.setChecked(false);
+                } else {
+                    menuItem.setChecked(true);
+                }
+
+                menuItem.setChecked(true);
                 mDrawerLayout.closeDrawers();
                 return true;
             }

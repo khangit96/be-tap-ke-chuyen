@@ -3,7 +3,8 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_wallpaper"
+            android:checked="true"
+            android:id="@+id/truyen_cua_be"
             android:icon="@drawable/ic_book"
             android:title="Truyện của bé" />
         <item
