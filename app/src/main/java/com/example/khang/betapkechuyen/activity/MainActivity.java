@@ -6,10 +6,13 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.support.design.widget.NavigationView;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.khang.betapkechuyen.R;
@@ -19,7 +22,6 @@ import com.example.khang.betapkechuyen.fragment.TruyenCuaBeFragment;
 public class MainActivity extends AppCompatActivity {
     DrawerLayout mDrawerLayout;
     Toolbar toolbar;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,5 +89,12 @@ public class MainActivity extends AppCompatActivity {
 
         mDrawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+
+        return true;
     }
 }
