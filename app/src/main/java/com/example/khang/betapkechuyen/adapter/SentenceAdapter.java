@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.khang.betapkechuyen.R;
+import com.example.khang.betapkechuyen.activity.TruyenCuaBeActivity;
 import com.example.khang.betapkechuyen.model.Sentence;
 import com.example.khang.betapkechuyen.model.Story;
 
@@ -45,7 +46,7 @@ public class SentenceAdapter extends ArrayAdapter<Sentence> {
 
         tvSentence.setText(sentence.content);
 
-        if(position==1){
+        if(position== TruyenCuaBeActivity.SELECTED_POS){
             tvSentence.setTextColor(ContextCompat.getColor(context, R.color.colorPrimary));
             tvSentence.setTextSize(17);
         }
