@@ -1,5 +1,6 @@
 package com.example.khang.betapkechuyen.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.khang.betapkechuyen.R;
+import com.example.khang.betapkechuyen.activity.TruyenCuaBeActivity;
 import com.example.khang.betapkechuyen.adapter.TruyenCuaBeAdapter;
 import com.example.khang.betapkechuyen.model.Story;
 
@@ -48,8 +50,10 @@ public class TruyenCuaBeFragment extends Fragment {
         lvTruyenCuaBe.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(getContext(), "Clicked", Toast.LENGTH_LONG).show();
-            }
+                Intent intent=new Intent(getContext(), TruyenCuaBeActivity.class);
+                intent.putExtra("STORY",storyList.get(i));
+                startActivity(intent);
+             }
         });
 
     }
