@@ -27,6 +27,7 @@ public class TruyenCuaBeActivity extends AppCompatActivity {
     int COUNT_SENTENCE = 0;
     public static int SELECTED_POS = -1;
     ImageView imgSentence;
+    List<Sentence> sentenceList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,23 +43,12 @@ public class TruyenCuaBeActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         story = (Story) getIntent().getSerializableExtra("STORY");
+        sentenceList = story.sentenceList;
         setTitle(story.storyTitle);
     }
 
     public void initControls() {
-        final List<Sentence> sentenceList = new ArrayList<>();
-        sentenceList.add(new Sentence("Một hôm hai cha con người nông  dân dắt một con lừa vào chợ. Họ định bán con lừa.", R.drawable.haichaconvaconlua_1, R.raw.haichaconlua_1));
-        sentenceList.add(new Sentence("Một hôm hai cha con người nông  dân dắt một con lừa vào chợ. Họ định bán con lừa.", R.drawable.haichaconvaconlua_2, R.raw.haichaconlua_2));
-        sentenceList.add(new Sentence("Một hôm hai cha con người nông  dân dắt một con lừa vào chợ. Họ định bán con lừa.", R.drawable.haichaconvaconlua_3, R.raw.haichaconlua_3));
-        sentenceList.add(new Sentence("Một hôm hai cha con người nông  dân dắt một con lừa vào chợ. Họ định bán con lừa.", R.drawable.haichaconvaconlua_4, R.raw.haichaconlua_4));
-        sentenceList.add(new Sentence("Một hôm hai cha con người nông  dân dắt một con lừa vào chợ. Họ định bán con lừa.", R.drawable.haichaconvaconlua_5, R.raw.haichaconlua_5));
-        sentenceList.add(new Sentence("Một hôm hai cha con người nông  dân dắt một con lừa vào chợ. Họ định bán con lừa.", R.drawable.haichaconvaconlua_6, R.raw.haichaconlua_6));
-        sentenceList.add(new Sentence("Một hôm hai cha con người nông  dân dắt một con lừa vào chợ. Họ định bán con lừa.", R.drawable.haichaconvaconlua_7, R.raw.haichaconlua_7));
-        sentenceList.add(new Sentence("Một hôm hai cha con người nông  dân dắt một con lừa vào chợ. Họ định bán con lừa.", R.drawable.haichaconvaconlua_7, R.raw.haichaconlua_8));
-        sentenceList.add(new Sentence("Một hôm hai cha con người nông  dân dắt một con lừa vào chợ. Họ định bán con lừa.", R.drawable.haichaconvaconlua_7, R.raw.haichaconlua_9));
-        sentenceList.add(new Sentence("Một hôm hai cha con người nông  dân dắt một con lừa vào chợ. Họ định bán con lừa.", R.drawable.haichaconvaconlua_7, R.raw.haichaconlua_10));
-
-        imgSentence= (ImageView) findViewById(R.id.imgSentence);
+        imgSentence = (ImageView) findViewById(R.id.imgSentence);
         imgSentence.setImageResource(sentenceList.get(0).imgResource);
         lvSentence = (ListView) findViewById(R.id.lvSentence);
         sentenceAdapter = new SentenceAdapter(TruyenCuaBeActivity.this, R.layout.list_sentence, sentenceList);
@@ -76,7 +66,7 @@ public class TruyenCuaBeActivity extends AppCompatActivity {
                         mediaPlayer = MediaPlayer.create(TruyenCuaBeActivity.this, sentenceList.get(COUNT_SENTENCE).soundResource);
                         mediaPlayer.start();
                         sentenceAdapter.notifyDataSetChanged();
-                        SELECTED_POS=COUNT_SENTENCE;
+                        SELECTED_POS = COUNT_SENTENCE;
 
                         lvSentence.post(new Runnable() {
                             @Override
