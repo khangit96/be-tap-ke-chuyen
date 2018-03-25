@@ -17,11 +17,13 @@ import android.widget.Toast;
 
 import com.example.khang.betapkechuyen.R;
 import com.example.khang.betapkechuyen.fragment.GauBongFragment;
+import com.example.khang.betapkechuyen.fragment.GhiAmFragment;
 import com.example.khang.betapkechuyen.fragment.TruyenCuaBeFragment;
 
 public class MainActivity extends AppCompatActivity {
     DrawerLayout mDrawerLayout;
     Toolbar toolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,8 +57,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
-                    case R.id.truyen_cua_be:;
+                    case R.id.truyen_cua_be:
                         loadFragment(new TruyenCuaBeFragment());
+                        break;
+                    case R.id.ghiAm:
+                        loadFragment(new GhiAmFragment());
                         break;
                     default:
                         loadFragment(new GauBongFragment());
@@ -90,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
         mDrawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
