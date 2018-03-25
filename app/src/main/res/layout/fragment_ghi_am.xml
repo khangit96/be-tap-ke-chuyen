@@ -6,12 +6,12 @@
     android:fitsSystemWindows="true">
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
+        android:id="@+id/fabGhiAm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
         android:tint="@android:color/white"
         app:backgroundTint="@color/colorPrimary"
-        android:src="@android:drawable/ic_input_add" />
+        android:src="@drawable/ic_keyboard_voice_black_24dp" />
 </android.support.design.widget.CoordinatorLayout>
