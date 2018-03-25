@@ -1,5 +1,6 @@
 package com.example.khang.betapkechuyen.fragment;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.media.MediaRecorder;
 import android.net.Uri;
@@ -31,6 +32,7 @@ public class GhiAmFragment extends Fragment {
     MediaRecorder recorder;
     StorageReference storageRef;
     String voicePath = "";
+    ProgressDialog mP;
 
     public GhiAmFragment() {
         // Required empty public constructor
@@ -66,9 +68,9 @@ public class GhiAmFragment extends Fragment {
             }
         });
 
-       // FirebaseStorage storage = FirebaseStorage.getInstance();
-      //  storageRef = storage.getReferenceFromUrl("gs://smarthome-5d11a.appspot.com");
-
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        storageRef = storage.getReferenceFromUrl("gs://smarthome-5d11a.appspot.com");
+        mP = new ProgressDialog(getContext());
         return view;
     }
 
@@ -80,7 +82,7 @@ public class GhiAmFragment extends Fragment {
         recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         recorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
         recorder.setOutputFile(Environment.getExternalStorageDirectory()
-                .getAbsolutePath() + "/myrecording.mp3");
+                .getAbsolutePath() + "/voice.mp3");
         recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
         try {
             recorder.prepare();
@@ -89,7 +91,7 @@ public class GhiAmFragment extends Fragment {
         }
         recorder.start();
         voicePath = Environment.getExternalStorageDirectory()
-                .getAbsolutePath() + "/myrecording.mp3";
+                .getAbsolutePath() + "/voice.mp3";
     }
 
     /*
@@ -103,8 +105,12 @@ public class GhiAmFragment extends Fragment {
     *
     * */
     public void uploadImageToFirebase() {
+        mP.setMessage("Đang xử lý dữ liệu...");
+        mP.setCanceledOnTouchOutside(false);
+        mP.show();
+
         Uri file = Uri.fromFile(new File(voicePath));
-        StorageReference riversRef = storageRef.child("data/" + file.getLastPathSegment());
+        StorageReference riversRef = storageRef.child("" + file.getLastPathSegment());
 
         UploadTask uploadTask;
         uploadTask = riversRef.putFile(file);
@@ -112,11 +118,12 @@ public class GhiAmFragment extends Fragment {
         uploadTask.addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
-                Toast.makeText(getContext(), "Error", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), exception.toString(), Toast.LENGTH_LONG).show();
             }
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                 mP.dismiss();
                 Toast.makeText(getContext(), taskSnapshot.getMetadata().getDownloadUrl().toString(), Toast.LENGTH_LONG).show();
 
             }
