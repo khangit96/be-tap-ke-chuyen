@@ -5,13 +5,34 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#EEEEEE"
+        android:orientation="vertical"
+        android:paddingBottom="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="5dp">
+
+        <ListView
+            android:id="@+id/lvGhiAm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:choiceMode="singleChoice"
+            android:descendantFocusability="blocksDescendants"></ListView>
+
+    </LinearLayout>
+
+
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fabGhiAm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
+        android:src="@drawable/ic_keyboard_voice_black_24dp"
         android:tint="@android:color/white"
-        app:backgroundTint="@color/colorPrimary"
-        android:src="@drawable/ic_keyboard_voice_black_24dp" />
+        app:backgroundTint="@color/colorPrimary" />
 </android.support.design.widget.CoordinatorLayout>
