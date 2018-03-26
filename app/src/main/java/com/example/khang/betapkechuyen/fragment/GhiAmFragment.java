@@ -12,17 +12,25 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.khang.betapkechuyen.R;
+import com.example.khang.betapkechuyen.adapter.GhiAmAdapter;
+import com.example.khang.betapkechuyen.model.GhiAm;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Random;
 
 
 public class GhiAmFragment extends Fragment {
@@ -33,6 +41,10 @@ public class GhiAmFragment extends Fragment {
     StorageReference storageRef;
     String voicePath = "";
     ProgressDialog mP;
+    String fileName = "";
+    ListView lvGhiAm;
+    GhiAmAdapter ghiAmAdapter;
+    ArrayList<GhiAm> ghiAmList;
 
     public GhiAmFragment() {
         // Required empty public constructor
@@ -61,6 +73,7 @@ public class GhiAmFragment extends Fragment {
                     return;
                 }
                 checkRecording = true;
+                fileName = randomString() + ".mp3";
                 //Start recording
                 startRecording();
                 Toast.makeText(getContext(), "Start Recording", Toast.LENGTH_LONG).show();
@@ -70,8 +83,30 @@ public class GhiAmFragment extends Fragment {
 
         FirebaseStorage storage = FirebaseStorage.getInstance();
         storageRef = storage.getReferenceFromUrl("gs://smarthome-5d11a.appspot.com");
+
         mP = new ProgressDialog(getContext());
+
+        lvGhiAm = view.findViewById(R.id.lvGhiAm);
+        ghiAmList = new ArrayList<>();
+        ghiAmAdapter = new GhiAmAdapter(getContext(), R.layout.list_ghi_am, ghiAmList);
+        lvGhiAm.setAdapter(ghiAmAdapter);
         return view;
+    }
+
+    /*
+    *
+    * */
+    protected String randomString() {
+        String SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+        StringBuilder salt = new StringBuilder();
+        Random rnd = new Random();
+        while (salt.length() < 18) { // length of the random string.
+            int index = (int) (rnd.nextFloat() * SALTCHARS.length());
+            salt.append(SALTCHARS.charAt(index));
+        }
+        String saltStr = salt.toString();
+        return saltStr;
+
     }
 
     /*
@@ -82,7 +117,7 @@ public class GhiAmFragment extends Fragment {
         recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         recorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
         recorder.setOutputFile(Environment.getExternalStorageDirectory()
-                .getAbsolutePath() + "/voice.mp3");
+                .getAbsolutePath() + "/" + fileName);
         recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
         try {
             recorder.prepare();
@@ -91,7 +126,7 @@ public class GhiAmFragment extends Fragment {
         }
         recorder.start();
         voicePath = Environment.getExternalStorageDirectory()
-                .getAbsolutePath() + "/voice.mp3";
+                .getAbsolutePath() + "/" + fileName;
     }
 
     /*
@@ -123,9 +158,16 @@ public class GhiAmFragment extends Fragment {
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                 mP.dismiss();
-                Toast.makeText(getContext(), taskSnapshot.getMetadata().getDownloadUrl().toString(), Toast.LENGTH_LONG).show();
+                mP.dismiss();
 
+                GhiAm ghiAm = new GhiAm(taskSnapshot.getMetadata().getDownloadUrl().toString(), fileName);
+                ghiAmList.add(ghiAm);
+                ghiAmAdapter.notifyDataSetChanged();
+
+                DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+                mDatabase.child("BeTapKeChuyen/DanhSachGhiAm").push().setValue(ghiAm);
+
+                Toast.makeText(getContext(), taskSnapshot.getMetadata().getDownloadUrl().toString(), Toast.LENGTH_LONG).show();
             }
         });
     }

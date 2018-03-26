@@ -58,9 +58,11 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
                     case R.id.truyen_cua_be:
+                        setTitle("Truyện của bé");
                         loadFragment(new TruyenCuaBeFragment());
                         break;
                     case R.id.ghiAm:
+                        setTitle("Ghi âm");
                         loadFragment(new GhiAmFragment());
                         break;
                     default:
