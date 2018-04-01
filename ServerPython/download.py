@@ -24,7 +24,7 @@ def stream_handler(message):
         fileUrl =message["data"]["urlDownload"]
         fileName=message["data"]["fileName"]
         urllib.urlretrieve(fileUrl,fileName)
-        os.system('omxplayer -o both '+fileName)
+        os.system('omxplayer -o alsa '+fileName)
 
         print('done')
     else:
